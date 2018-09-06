@@ -9,26 +9,7 @@ const inquirer = require('inquirer');
  * 登录
  */
 module.exports.login = async function login() {
-  try {
-    const { username } = await inquirer.prompt([{
-      type: 'input',
-      // 显示的文案
-      message: 'Username',
-      // 返回的字段 key
-      name: 'username',
-    }]);
-    const { password } = await inquirer.prompt([{
-      type: 'password',
-      message: 'Password',
-      name: 'password'
-    }]);
-    console.log(username, password);
-    // 调用登录方法去登录
-    const loginedUser = await AV.User.logIn(username, password);
-    console.log(loginedUser);
-  } catch (err) {
-    console.log(err);
-  }
+  
 }
 
 /**
