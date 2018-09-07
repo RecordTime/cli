@@ -4,20 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint lib/**"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "chalk": "^2.4.1",
-    "clipboardy": "^1.2.3",
-    "commander": "^2.17.1",
     "dotenv": "^6.0.0",
     "inquirer": "^6.2.0",
     "leancloud-storage": "^3.10.0",
     "leanengine": "^3.2.0",
     "meow": "^5.0.0",
     "signale": "^1.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.5.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
   }
 }
