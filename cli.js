@@ -12,6 +12,10 @@ const cli = meow(help, {
       type: 'boolean',
       alias: 'l',
     },
+    register: {
+      type: 'boolean',
+      alias: 'r',
+    },
     task: {
       type: 'boolean',
       alias: 't',

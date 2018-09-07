@@ -8,8 +8,11 @@ const recordTimeCLI = (input, flags) => {
   if (flags.task) {
     return core.createTask(input);
   }
-  core.displayByBoard();
+  if (flags.register) {
+    return core.register();
+  }
+  return core.displayByBoard();
   // return core.displayStats();
-}
+};
 
 module.exports = recordTimeCLI;
