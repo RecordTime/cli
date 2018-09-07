@@ -11,8 +11,8 @@ const recordTimeCLI = (input, flags) => {
   if (flags.register) {
     return core.register();
   }
-  return core.displayByBoard();
-  // return core.displayStats();
+  core.displayByBoard();
+  return core.displayStats();
 };
 
 module.exports = recordTimeCLI;
