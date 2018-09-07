@@ -17,7 +17,8 @@
     "leancloud-storage": "^3.10.0",
     "leanengine": "^3.2.0",
     "meow": "^5.0.0",
-    "signale": "^1.2.1"
+    "signale": "^1.2.1",
+    "tapable": "^1.0.0"
   },
   "devDependencies": {
     "eslint": "^5.5.0",
