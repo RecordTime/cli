@@ -4,12 +4,11 @@
  */
 require('dotenv').config();
 const fs = require('fs');
-const os = require('os');
 const path = require('path');
 const AV = require('leanengine');
 const signale = require('signale');
 
-const { getItem, format } = require('../utils');
+const { getItem, format } = require('./utils');
 
 const { error } = signale;
 
@@ -31,12 +30,17 @@ AV.init({
 });
 
 class Service {
+  constructor(options) {
+    this.options = options;
+  }
+
   get isLogin() {
     return !!this.session;
   }
 
   get sessionFile() {
-    return path.join(os.homedir(), '.recordtimerc');
+    const { appDir } = this.options;
+    return path.join(appDir, '.session');
   }
 
   get session() {
@@ -117,9 +121,14 @@ class Service {
 
   /**
    * 新增任务
+   * @param {number} params.id - id
    * @param {string} params.title - 用来显示的内容
    * @param {string} params.description - 补充描述
    * @param {string} params.board - 分类
+   * @param {boolean} params.isComplete - 分类
+   * @param {number} params.priority - 优先级
+   * @param {boolean} params.isStarred - 是否标志
+   * @param {timestamp} params.created - 创建时间
    */
   async createTask(params) {
     const Task = AV.Object.extend(TASK_CLASS);

@@ -5,15 +5,9 @@
 const core = require('./lib');
 
 const recordTimeCLI = (input, flags) => {
-  // 先检查是否登录
-  // if (!core._storage.isLogin) {
-  //   return core.login();
-  // }
-  if (flags.task) {
-    return core.createTask(input);
-  }
-  if (flags.register) {
-    return core.register();
+  const res = core.hooks.BeforeInvoke.call(input, flags);
+  if (res) {
+    return false;
   }
   core.displayByBoard();
   return core.displayStats();
