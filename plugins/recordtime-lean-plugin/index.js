@@ -37,7 +37,17 @@ class LeanPlugin {
       platform: 0,
     }));
     core.hooks.afterSaveTask.tap('LeanPlugin', (task) => {
-      this._service.createTask(task);
+      this._service.createTask(task)
+        .then((res) => {
+          // 拿到保存成功后的 objectid，写入本地
+          core.updateTask({
+            ...task,
+            objectid: res._id,
+          });
+        });
+    });
+    core.hooks.afterCheckedTasks.tap('LeanPlugin', (ids) => {
+      this._service.updateTasks(ids);
     });
 
     return {

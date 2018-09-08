@@ -85,6 +85,10 @@ class Service {
     return loginedUser;
   }
 
+  /**
+   * 注册
+   * @param {*} param0
+   */
   async register({ username, password, email }) {
     const user = new AV.User();
     user.setUsername(username);
@@ -145,6 +149,25 @@ class Service {
       error(err.code, err.rawMessage);
       return Promise.reject(err);
     }
+  }
+
+  /**
+   *
+   * @param {uid[]} uids
+   */
+  async updateTasks(uids, checked, unchecked) {
+    const objects = [
+      ...checked.map((uid) => {
+        const task = AV.Object.createWithoutData(TASK_CLASS);
+        task.set('isComplete', true);
+        return task;
+      }),
+      ...unchecked.map((uid) => {
+        const task = AV.Object.createWithoutData(TASK_CLASS);
+        task.set('isComplete', false);
+        return task;
+      }),
+    ];
   }
 }
 
