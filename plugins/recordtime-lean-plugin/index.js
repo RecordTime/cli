@@ -10,9 +10,10 @@ const Service = require('./service');
 const { error } = signale;
 
 class LeanPlugin {
-  constructor(options) {
+  constructor(core) {
+    this._core = core;
     this.options = {
-      appDir: options._storage._mainAppDir,
+      appDir: core._storage._mainAppDir,
     };
 
     this._service = new Service(this.options);
@@ -63,17 +64,56 @@ class LeanPlugin {
   }
 
   apply(storage) {
-    storage.hooks.BeforeInvoke.tap('a', () => {
+    storage.hooks.BeforeInvoke.tap('LeanPlugin', () => {
       if (!this._service.isLogin) {
         console.log('check is login, and tip login');
         return this.login();
       }
       return false;
     });
-    // 注册事件
-    storage.hooks.CreateTask.tap('CreateTaskSuccess', (task) => {
-      console.log('plugins', task);
+    storage.hooks.BeforeSaveTask.tap('LeanPlugin', task => ({
+      ...task,
+      // 多终端唯一 id
+      uid: task.id,
+      // 表示从命令行创建
+      platform: 0,
+    }));
+    storage.hooks.CreateTask.tap('LeanPlugin', (task) => {
+      this._service.createTask(task);
     });
+  }
+
+  async sync() {
+    const onlineTasks = await this._service.fetchTasks();
+    const localTasks = this._core._data;
+    //
+    const needDownloadTasks = {};
+    const needUploadTasks = {};
+    // 将云端任务与本地任务对比、同步，以 _id 为标志
+    const onlineKeys = Object.keys(onlineTasks);
+    console.log('线上任务数为：', onlineKeys.length);
+    const localKeys = Object.keys(localTasks);
+    console.log('本地任务数为：', localKeys.length);
+    const longLen = Math.max(onlineKeys.length, localKeys.length);
+
+    let [outer, inner] = [onlineTasks, localTasks];
+    if (localTasks.length === longLen) {
+      outer = localTasks;
+    }
+    for (let x = 0, y = Object.keys(outer).length; x < y; x += 1) {
+      const localKey = Object.keys(outer)[x];
+      const localTask = outer[localKey];
+
+      if (localTask.id === undefined) {
+        needDownloadTasks[onlineKey] = onlineTask;
+        continue;
+      }
+
+      for (let i = 0, len = Object.keys(inner).length; i < len; i += 1) {
+        const onlineKey = Object.keys(inner)[i];
+        const onlineTask = inner[onlineKey];
+      }
+    }
   }
 }
 

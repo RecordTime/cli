@@ -9,6 +9,9 @@ const recordTimeCLI = (input, flags) => {
   if (res) {
     return false;
   }
+  if (flags.task) {
+    return core.createTask(input);
+  }
   core.displayByBoard();
   return core.displayStats();
 };

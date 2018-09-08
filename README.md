@@ -2,6 +2,23 @@
 
 在命令行处理待办事项，使用`leancloud`存储数据。代码参考`taskbook`实现。
 
+## Interface
+
+### Task
+
+为了同步，给每个`task`一个`from`字段
+
+```js
+{
+  from: {
+    0: 'cli',
+    1: 'web',
+    2: 'platform',
+    3: 'mobile',
+  }
+}
+```
+
 ## 多用户
 
 虽然理论上来说只应该有一个用户，但是如果就是喜欢多个账号呢？

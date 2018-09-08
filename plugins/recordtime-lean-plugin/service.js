@@ -17,6 +17,7 @@ const TASK_CLASS = 'Task';
 
 // Task 字段及默认值
 const TASK_INTERFACE = {
+  uid: 0,
   title: 'title',
   desc: 'description',
   isComplete: false,
