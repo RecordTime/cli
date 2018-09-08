@@ -155,19 +155,26 @@ class Service {
    *
    * @param {uid[]} uids
    */
-  async updateTasks(uids, checked, unchecked) {
+  async updateTasks(checked, unchecked) {
     const objects = [
-      ...checked.map((uid) => {
-        const task = AV.Object.createWithoutData(TASK_CLASS);
+      ...checked.map((id) => {
+        const task = AV.Object.createWithoutData(TASK_CLASS, id);
         task.set('isComplete', true);
         return task;
       }),
-      ...unchecked.map((uid) => {
-        const task = AV.Object.createWithoutData(TASK_CLASS);
+      ...unchecked.map((id) => {
+        const task = AV.Object.createWithoutData(TASK_CLASS, id);
         task.set('isComplete', false);
         return task;
       }),
     ];
+    AV.Object.saveAll(objects, { sessionToken: this.session });
+    // .then((res) => {
+    //   console.log('update success', res);
+    // })
+    // .catch((err) => {
+    //   console.log('fail', err);
+    // });
   }
 }
 

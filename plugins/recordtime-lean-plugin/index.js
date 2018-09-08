@@ -46,8 +46,11 @@ class LeanPlugin {
           });
         });
     });
-    core.hooks.afterCheckedTasks.tap('LeanPlugin', (ids) => {
-      this._service.updateTasks(ids);
+    core.hooks.afterCheckedTasks.tap('LeanPlugin', (ids, checked, unchecked) => {
+      const data = core._data;
+      const checkedObjectids = checked.map(id => (data[id] || {}).objectid).filter(x => !!x);
+      const uncheckedObjectids = unchecked.map(id => (data[id] || {}).objectid).filter(x => !!x);
+      this._service.updateTasks(checkedObjectids, uncheckedObjectids);
     });
 
     return {
