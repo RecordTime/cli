@@ -1,27 +1,23 @@
 #! /usr/bin/env node
 
-const meow = require('meow');
+
+const LeanPlugin = require('./plugins/recordtime-lean-plugin');
+const TypePlugin = require('./plugins/recordtime-type-plugin');
 
 const help = require('./lib/help');
-const recordTimeCLI = require('.');
+const RecordTimeCLI = require('.');
 
-// 这里是进行支持的参数配置
-const cli = meow(help, {
+const recordTimeCLI = new RecordTimeCLI({
+  help,
   flags: {
-    login: {
-      type: 'boolean',
-      alias: 'l',
-    },
-    register: {
-      type: 'boolean',
-      alias: 'r',
-    },
     task: {
       type: 'boolean',
       alias: 't',
     },
   },
+  plugins: [
+    new LeanPlugin(),
+    new TypePlugin(),
+  ],
 });
-
-// 每次输入命令，都是从这里开始
-recordTimeCLI(cli.input, cli.flags);
+recordTimeCLI.apply();

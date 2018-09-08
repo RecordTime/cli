@@ -10,13 +10,67 @@ const Service = require('./service');
 const { error } = signale;
 
 class LeanPlugin {
-  constructor(core) {
-    this._core = core;
-    this.options = {
-      appDir: core._storage._mainAppDir,
-    };
+  constructor(options) {
+    this.options = options;
 
+    // this.options = {
+    //   appDir: core._storage._mainAppDir,
+    // };
     this._service = new Service(this.options);
+  }
+
+  /**
+   * 注册事件
+   * @param {RecordTimeCLI} cli
+   */
+  apply(cli) {
+    cli.hooks.init.tap('LeanPlugin', this.beforeInit.bind(this));
+    cli.hooks.beforeApply.tap('LeanPlugin', this.beforeExec.bind(this));
+    // storage.hooks.BeforeInvoke.tap('LeanPlugin', () => {
+    //   if (!this._service.isLogin) {
+    //     console.log('check is login, and tip login');
+    //     return this.login();
+    //   }
+    //   return false;
+    // });
+    // storage.hooks.BeforeSaveTask.tap('LeanPlugin', task => ({
+    //   ...task,
+    //   // 多终端唯一 id
+    //   uid: task.id,
+    //   // 表示从命令行创建
+    //   platform: 0,
+    // }));
+    // storage.hooks.AfterSaveTask.tap('LeanPlugin', (task) => {
+    //   this._service.createTask(task);
+    // });
+  }
+
+  beforeInit(options = {}, core) {
+    core.hooks.beforeSaveTask.tap('LeanPlugin', task => ({ ...task, uid: task.id, platform: 0 }));
+    return {
+      ...options,
+      flags: {
+        ...options.flags,
+        login: {
+          type: 'boolean',
+          alias: 'l',
+        },
+        register: {
+          type: 'boolean',
+          alias: 'r',
+        },
+      },
+    };
+  }
+
+  beforeExec(input, flags) {
+    if (flags.login) {
+      return this.login();
+    }
+    if (flags.register) {
+      return this.register();
+    }
+    return false;
   }
 
   async login() {
@@ -63,58 +117,38 @@ class LeanPlugin {
     }
   }
 
-  apply(storage) {
-    storage.hooks.BeforeInvoke.tap('LeanPlugin', () => {
-      if (!this._service.isLogin) {
-        console.log('check is login, and tip login');
-        return this.login();
-      }
-      return false;
-    });
-    storage.hooks.BeforeSaveTask.tap('LeanPlugin', task => ({
-      ...task,
-      // 多终端唯一 id
-      uid: task.id,
-      // 表示从命令行创建
-      platform: 0,
-    }));
-    storage.hooks.AfterSaveTask.tap('LeanPlugin', (task) => {
-      this._service.createTask(task);
-    });
-  }
+  // async sync() {
+  //   const onlineTasks = await this._service.fetchTasks();
+  //   const localTasks = this._core._data;
+  //   //
+  //   const needDownloadTasks = {};
+  //   const needUploadTasks = {};
+  //   // 将云端任务与本地任务对比、同步，以 _id 为标志
+  //   const onlineKeys = Object.keys(onlineTasks);
+  //   console.log('线上任务数为：', onlineKeys.length);
+  //   const localKeys = Object.keys(localTasks);
+  //   console.log('本地任务数为：', localKeys.length);
+  //   const longLen = Math.max(onlineKeys.length, localKeys.length);
 
-  async sync() {
-    const onlineTasks = await this._service.fetchTasks();
-    const localTasks = this._core._data;
-    //
-    const needDownloadTasks = {};
-    const needUploadTasks = {};
-    // 将云端任务与本地任务对比、同步，以 _id 为标志
-    const onlineKeys = Object.keys(onlineTasks);
-    console.log('线上任务数为：', onlineKeys.length);
-    const localKeys = Object.keys(localTasks);
-    console.log('本地任务数为：', localKeys.length);
-    const longLen = Math.max(onlineKeys.length, localKeys.length);
+  //   let [outer, inner] = [onlineTasks, localTasks];
+  //   if (localTasks.length === longLen) {
+  //     outer = localTasks;
+  //   }
+  //   for (let x = 0, y = Object.keys(outer).length; x < y; x += 1) {
+  //     const localKey = Object.keys(outer)[x];
+  //     const localTask = outer[localKey];
 
-    let [outer, inner] = [onlineTasks, localTasks];
-    if (localTasks.length === longLen) {
-      outer = localTasks;
-    }
-    for (let x = 0, y = Object.keys(outer).length; x < y; x += 1) {
-      const localKey = Object.keys(outer)[x];
-      const localTask = outer[localKey];
+  //     if (localTask.id === undefined) {
+  //       needDownloadTasks[onlineKey] = onlineTask;
+  //       continue;
+  //     }
 
-      if (localTask.id === undefined) {
-        needDownloadTasks[onlineKey] = onlineTask;
-        continue;
-      }
-
-      for (let i = 0, len = Object.keys(inner).length; i < len; i += 1) {
-        const onlineKey = Object.keys(inner)[i];
-        const onlineTask = inner[onlineKey];
-      }
-    }
-  }
+  //     for (let i = 0, len = Object.keys(inner).length; i < len; i += 1) {
+  //       const onlineKey = Object.keys(inner)[i];
+  //       const onlineTask = inner[onlineKey];
+  //     }
+  //   }
+  // }
 }
 
 module.exports = LeanPlugin;

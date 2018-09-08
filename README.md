@@ -1,6 +1,6 @@
 # RecordTime Cli
 
-在命令行处理待办事项，使用`leancloud`存储数据。代码参考`taskbook`实现。
+参考`taskbook`和`webpack`，实现的一个支持插件的`cli todo list`。
 
 ## Interface
 
@@ -26,6 +26,14 @@
 ## Plugins
 
 支持插件，比如创建任务时，向指定的地址`post`创建好的任务。
+
+### init
+
+在初始化前调用，可对`options`进行处理，一般在这个时候添加额外的命令。
+
+### beforeApply
+
+如果在`init`增加了命令，需要在这个地方响应对应的命令。
 
 ## 目录
 

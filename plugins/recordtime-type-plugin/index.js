@@ -1,13 +1,15 @@
 class TypePlugin {
-  constructor(core) {
-    this.core = core;
+  constructor(options) {
+    this.options = options;
   }
 
-  apply(core) {
-    core.hooks.BeforeSaveTask.tap('TypePlugin', task => ({
-      ...task,
-      type: 0,
-    }));
+  apply(cli) {
+    cli.hooks.init.tap('TypePlugin', (options, core) => {
+      core.hooks.BeforeSaveTask.tap('TypePlugin', task => ({
+        ...task,
+        type: 0,
+      }));
+    });
   }
 }
 
