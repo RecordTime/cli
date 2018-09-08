@@ -33,14 +33,17 @@ class RecordTimeCLI extends Tapable {
 
   apply() {
     const { core } = this;
-    const { help, flags } = this.options;
-    const cli = meow(help, { flags });
-    const over = this.hooks.beforeApply.call(cli.input, cli.flags);
+    const { help, flags: flagsConfig } = this.options;
+    const { input, flags } = meow(help, { flags: flagsConfig });
+    const over = this.hooks.beforeApply.call(input, flags);
     if (over) {
       return false;
     }
-    if (cli.flags.task) {
-      return core.createTask(cli.input);
+    if (flags.task) {
+      return core.createTask(input);
+    }
+    if (flags.check) {
+      return core.checkTasks(input);
     }
     core.displayByBoard();
     return core.displayStats();

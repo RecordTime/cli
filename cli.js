@@ -14,6 +14,10 @@ const recordTimeCLI = new RecordTimeCLI({
       type: 'boolean',
       alias: 't',
     },
+    check: {
+      type: 'boolean',
+      alias: 'c',
+    },
   },
   plugins: [
     new LeanPlugin(),
