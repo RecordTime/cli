@@ -12,11 +12,6 @@ const { error } = signale;
 class LeanPlugin {
   constructor(options) {
     this.options = options;
-
-    // this.options = {
-    //   appDir: core._storage._mainAppDir,
-    // };
-    this._service = new Service(this.options);
   }
 
   /**
@@ -26,27 +21,25 @@ class LeanPlugin {
   apply(cli) {
     cli.hooks.init.tap('LeanPlugin', this.beforeInit.bind(this));
     cli.hooks.beforeApply.tap('LeanPlugin', this.beforeExec.bind(this));
-    // storage.hooks.BeforeInvoke.tap('LeanPlugin', () => {
-    //   if (!this._service.isLogin) {
-    //     console.log('check is login, and tip login');
-    //     return this.login();
-    //   }
-    //   return false;
-    // });
-    // storage.hooks.BeforeSaveTask.tap('LeanPlugin', task => ({
-    //   ...task,
-    //   // 多终端唯一 id
-    //   uid: task.id,
-    //   // 表示从命令行创建
-    //   platform: 0,
-    // }));
-    // storage.hooks.AfterSaveTask.tap('LeanPlugin', (task) => {
-    //   this._service.createTask(task);
-    // });
   }
 
   beforeInit(options = {}, core) {
-    core.hooks.beforeSaveTask.tap('LeanPlugin', task => ({ ...task, uid: task.id, platform: 0 }));
+    this.options = {
+      appDir: core._storage._mainAppDir,
+    };
+    this._service = new Service(this.options);
+
+    core.hooks.beforeSaveTask.tap('LeanPlugin', task => ({
+      ...task,
+      // 多终端唯一 id
+      uid: task._id,
+      // 表示从命令行创建
+      platform: 0,
+    }));
+    core.hooks.afterSaveTask.tap('LeanPlugin', (task) => {
+      this._service.createTask(task);
+    });
+
     return {
       ...options,
       flags: {
@@ -64,6 +57,10 @@ class LeanPlugin {
   }
 
   beforeExec(input, flags) {
+    if (!this._service.isLogin) {
+      console.log('check is login, and tip login');
+      return this.login();
+    }
     if (flags.login) {
       return this.login();
     }
