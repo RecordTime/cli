@@ -78,7 +78,7 @@ class LeanPlugin {
       // 表示从命令行创建
       platform: 0,
     }));
-    storage.hooks.CreateTask.tap('LeanPlugin', (task) => {
+    storage.hooks.AfterSaveTask.tap('LeanPlugin', (task) => {
       this._service.createTask(task);
     });
   }
