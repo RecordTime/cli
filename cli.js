@@ -6,6 +6,7 @@ const LeanPlugin = require('./plugins/recordtime-lean-plugin');
 const help = require('./lib/help');
 const RecordTimeCLI = require('.');
 
+
 const recordTimeCLI = new RecordTimeCLI({
   help,
   flags: {
