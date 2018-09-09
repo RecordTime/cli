@@ -9,6 +9,7 @@ module.exports = {
   TEMP_DIR_NAME: '.temp',
   ARCHIVE_FILE_NAME: 'archive.json',
   STORAGE_FILE_NAME: 'storage.json',
+  LOG_FILE_NAME: 'log.json',
 
   DEFAULT_BOARD: '@Undefined',
 };

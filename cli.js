@@ -10,6 +10,10 @@ const RecordTimeCLI = require('.');
 const recordTimeCLI = new RecordTimeCLI({
   help,
   flags: {
+    doing: {
+      type: 'boolean',
+      alias: 'd',
+    },
     task: {
       type: 'boolean',
       alias: 't',
