@@ -4,17 +4,39 @@
 
 ## Usage
 
+### create task
+
+![create task](./assets/create-task.png)
+
+### show tasks
+
+![show tasks](./assets/show-tasks.png)
+
 ### start work
+
+![start work](./assets/start-work.png)
 
 ```bash
 node cli.js --doing
 ```
 
-### add task
+### log
 
-```bash
-node cli.js -t title @Board
-```
+![log](./assets/log-time.png)
+
+### auto rest
+
+![rest](./assets/auto-rest.png)
+
+### complete task
+
+![complete](./assets/complete-task.png)
+
+![not show complete task](./assets/not-show-complete-task.png)
+
+### working
+
+![working](./assets/auto.png)
 
 ## Interface
 
