@@ -1,6 +1,20 @@
 # RecordTime Cli
 
-参考`taskbook`和`webpack`，实现的一个支持插件的`cli todo list`。
+`Time Tracker`，简单来说就是「番茄钟」+「Todo」。
+
+## Usage
+
+### start work
+
+```bash
+node cli.js --doing
+```
+
+### add task
+
+```bash
+node cli.js -t title @Board
+```
 
 ## Interface
 

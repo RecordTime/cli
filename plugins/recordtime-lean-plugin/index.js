@@ -60,7 +60,7 @@ class LeanPlugin {
     core.hooks.afterSaveLog.tap('LeanPlugin', (log) => {
       this._service.saveLog({
         ...log,
-        task: core._data[log.task].objectid,
+        task: log.task && core._data[log.task].objectid,
       });
     });
 
