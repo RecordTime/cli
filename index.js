@@ -42,6 +42,9 @@ class RecordTimeCLI extends Tapable {
     if (flags.doing) {
       return core.startWork();
     }
+    if (flags.log) {
+      return core.log(input);
+    }
     if (flags.task) {
       return core.createTask(input);
     }

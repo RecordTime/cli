@@ -1,6 +1,5 @@
 #! /usr/bin/env node
 
-
 const LeanPlugin = require('./plugins/recordtime-lean-plugin');
 // const TypePlugin = require('./plugins/recordtime-type-plugin');
 
@@ -13,6 +12,9 @@ const recordTimeCLI = new RecordTimeCLI({
     doing: {
       type: 'boolean',
       alias: 'd',
+    },
+    log: {
+      type: 'boolean',
     },
     task: {
       type: 'boolean',
@@ -28,4 +30,5 @@ const recordTimeCLI = new RecordTimeCLI({
     // new TypePlugin(),
   ],
 });
+
 recordTimeCLI.apply();

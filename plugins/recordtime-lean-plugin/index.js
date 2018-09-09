@@ -53,6 +53,17 @@ class LeanPlugin {
       this._service.updateTasks(checkedObjectids, uncheckedObjectids);
     });
 
+    core.hooks.beforeSaveLog.tap('LeanPlugin', log => ({
+      ...log,
+      uid: log.id,
+    }));
+    core.hooks.afterSaveLog.tap('LeanPlugin', (log) => {
+      this._service.saveLog({
+        ...log,
+        task: core._data[log.task].objectid,
+      });
+    });
+
     return {
       ...options,
       flags: {
@@ -67,6 +78,14 @@ class LeanPlugin {
         },
       },
     };
+  }
+
+  beforeSaveLog() {
+
+  }
+
+  afterSaveLog() {
+
   }
 
   beforeExec(input, flags) {

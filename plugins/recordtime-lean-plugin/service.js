@@ -14,15 +14,23 @@ const { error } = signale;
 
 const DEFAULT_BOARD = '@Work';
 const TASK_CLASS = 'Task';
+const LOG_CLASS = 'Log';
 
 // Task 字段及默认值
 const TASK_INTERFACE = {
   uid: 0,
   title: 'title',
-  desc: 'description',
+  desc: null,
   isComplete: false,
   board: DEFAULT_BOARD,
   // owner: 'User',
+};
+const LOG_INTERFACE = {
+  uid: 0,
+  beginTime: undefined,
+  endTime: undefined,
+  content: null,
+  task: undefined,
 };
 
 AV.init({
@@ -175,6 +183,23 @@ class Service {
     // .catch((err) => {
     //   console.log('fail', err);
     // });
+  }
+
+  async saveLog(params) {
+    const Log = AV.Object.extend(LOG_CLASS);
+    const log = new Log();
+    Object.keys(LOG_INTERFACE).forEach((key) => {
+      log.set(key, params[key] || TASK_INTERFACE[key]);
+    });
+    log.set('task', AV.Object.createWithoutData(TASK_CLASS, log.task));
+    log.set('creator', AV.Object.createWithoutData('_User', this.user.id));
+    try {
+      const createdLog = await log.save(null, { sessionToken: this.session });
+      return createdLog;
+    } catch (err) {
+      error(err.code, err.rawMessage);
+      return Promise.reject(err);
+    }
   }
 }
 
