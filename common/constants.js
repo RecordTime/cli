@@ -3,7 +3,7 @@
  * @author ltaoo
  */
 module.exports = {
-  APP_DIR_NAME: '.recordtime',
+  APP_DIR_NAME: process.env.NODE_ENV === 'productaion' ? '.recordtime' : '.record-dev',
   STORAGE_DIR_NAME: 'storage',
   ARCHIVE_DIR_NAME: 'archive',
   TEMP_DIR_NAME: '.temp',
@@ -12,4 +12,6 @@ module.exports = {
   LOG_FILE_NAME: 'log.json',
 
   DEFAULT_BOARD: '@Undefined',
+
+  NO_PERMISSION_TIP: '请先登录',
 };

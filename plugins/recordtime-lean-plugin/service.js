@@ -10,7 +10,17 @@ const signale = require('signale');
 
 const { getItem, format } = require('./utils');
 
-const { error } = signale;
+signale.config({ displayLabel: false });
+
+const { Signale, error } = signale;
+const options = {
+  disabled: false,
+  interactive: true,
+  stream: process.stdout,
+  scope: 'register',
+};
+
+const progress = new Signale(options);
 
 const DEFAULT_BOARD = '@Work';
 const TASK_CLASS = 'Task';
@@ -32,10 +42,15 @@ const LOG_INTERFACE = {
   content: null,
   task: undefined,
 };
-
+let appId = 'Yjq98hRPOhKshBO2znnIFdrb-gzGzoHsz';
+let appKey = 'M1Xm5rR4I8mLsVtPtv9sVY23';
+if (process.env.NODE_ENV === 'production') {
+  appId = 'A7zzPAY1DY85f9UfYCWqfuY6-gzGzoHsz';
+  appKey = 'fq6eTM7cLL2JM7k1tXL5agg3';
+}
 AV.init({
-  appId: process.env.LEANCLOUD_APP_ID,
-  appKey: process.env.LEANCLOUD_APP_KEY,
+  appId,
+  appKey,
 });
 
 class Service {
@@ -98,6 +113,7 @@ class Service {
    * @param {*} param0
    */
   async register({ username, password, email }) {
+    progress.watch('Loading...');
     const user = new AV.User();
     user.setUsername(username);
     user.setPassword(password);
@@ -108,8 +124,10 @@ class Service {
         ...loginedUser,
         session: loginedUser._sessionToken,
       };
+      progress.success('注册成功');
     } catch (err) {
       error(err.code, err.rawMessage);
+      progress.fatal(err.code, err.rawMessage);
     }
   }
 

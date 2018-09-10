@@ -6,6 +6,7 @@ const inquirer = require('inquirer');
 const signale = require('signale');
 
 const Service = require('./service');
+const { NO_PERMISSION_TIP } = require('./constants');
 
 const { error } = signale;
 
@@ -58,6 +59,7 @@ class LeanPlugin {
       uid: log.id,
     }));
     core.hooks.afterSaveLog.tap('LeanPlugin', (log) => {
+      console.log(log.task, core._data[log.task].objectid);
       this._service.saveLog({
         ...log,
         task: log.task && core._data[log.task].objectid,
@@ -89,15 +91,15 @@ class LeanPlugin {
   }
 
   beforeExec(input, flags) {
+    if (flags.register) {
+      return this.register();
+    }
     if (!this._service.isLogin) {
-      console.log('check is login, and tip login');
+      console.log(NO_PERMISSION_TIP);
       return this.login();
     }
     if (flags.login) {
       return this.login();
-    }
-    if (flags.register) {
-      return this.register();
     }
     return false;
   }
@@ -140,7 +142,7 @@ class LeanPlugin {
         message: 'Password',
         name: 'password',
       }]);
-      await this._storage.register({ username, password, email });
+      await this._service.register({ username, password, email });
     } catch (err) {
       error(err);
     }
