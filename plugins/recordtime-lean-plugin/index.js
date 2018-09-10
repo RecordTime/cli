@@ -38,6 +38,7 @@ class LeanPlugin {
       platform: 0,
     }));
     core.hooks.afterSaveTask.tap('LeanPlugin', (task) => {
+      console.log('create task');
       this._service.createTask(task)
         .then((res) => {
           // 拿到保存成功后的 objectid，写入本地

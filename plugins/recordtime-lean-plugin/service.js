@@ -13,14 +13,13 @@ const { getItem, format } = require('./utils');
 signale.config({ displayLabel: false });
 
 const { Signale, error } = signale;
-const options = {
+
+const progress = new Signale({
   disabled: false,
   interactive: true,
   stream: process.stdout,
   scope: 'register',
-};
-
-const progress = new Signale(options);
+});
 
 const DEFAULT_BOARD = '@Work';
 const TASK_CLASS = 'Task';
@@ -40,7 +39,7 @@ const LOG_INTERFACE = {
   beginTime: undefined,
   endTime: undefined,
   content: null,
-  task: undefined,
+  // task: undefined,
 };
 let appId = 'Yjq98hRPOhKshBO2znnIFdrb-gzGzoHsz';
 let appKey = 'M1Xm5rR4I8mLsVtPtv9sVY23';
@@ -178,7 +177,7 @@ class Service {
   }
 
   /**
-   *
+   * 更新任务
    * @param {uid[]} uids
    */
   async updateTasks(checked, unchecked) {
@@ -195,21 +194,19 @@ class Service {
       }),
     ];
     AV.Object.saveAll(objects, { sessionToken: this.session });
-    // .then((res) => {
-    //   console.log('update success', res);
-    // })
-    // .catch((err) => {
-    //   console.log('fail', err);
-    // });
   }
 
+  /**
+   * 保存log
+   * @param {*} params
+   */
   async saveLog(params) {
     const Log = AV.Object.extend(LOG_CLASS);
     const log = new Log();
     Object.keys(LOG_INTERFACE).forEach((key) => {
       log.set(key, params[key] || TASK_INTERFACE[key]);
     });
-    log.set('task', AV.Object.createWithoutData(TASK_CLASS, log.task));
+    log.set('task', AV.Object.createWithoutData(TASK_CLASS, params.task));
     log.set('creator', AV.Object.createWithoutData('_User', this.user.id));
     try {
       const createdLog = await log.save(null, { sessionToken: this.session });
