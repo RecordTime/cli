@@ -4,6 +4,14 @@
 
 ## Usage
 
+### install
+
+```bash
+sudo npm i -g record-time-cli
+```
+
+之后的命令`node ./cli.js`都使用`rt`替代。
+
 ### create task
 
 ![create task](./assets/create-task.png)

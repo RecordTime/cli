@@ -7,6 +7,14 @@
   "bin": {
     "rt": "./cli.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RecordTime/cli"
+  },
+  "homepage": "https://github.com/RecordTime/cli",
+  "bugs": {
+    "url": "https://github.com/RecordTime/cli/issues"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
