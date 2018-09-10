@@ -1,5 +1,7 @@
 #! /usr/bin/env node
 
+require('dotenv').config();
+
 const LeanPlugin = require('./plugins/recordtime-lean-plugin');
 // const TypePlugin = require('./plugins/recordtime-type-plugin');
 

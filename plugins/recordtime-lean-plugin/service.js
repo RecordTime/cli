@@ -2,7 +2,6 @@
  * @file 数据存储与读取
  * @author ltaoo
  */
-require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const AV = require('leanengine');
@@ -41,11 +40,11 @@ const LOG_INTERFACE = {
   content: null,
   // task: undefined,
 };
-let appId = 'Yjq98hRPOhKshBO2znnIFdrb-gzGzoHsz';
-let appKey = 'M1Xm5rR4I8mLsVtPtv9sVY23';
-if (process.env.NODE_ENV === 'production') {
-  appId = 'A7zzPAY1DY85f9UfYCWqfuY6-gzGzoHsz';
-  appKey = 'fq6eTM7cLL2JM7k1tXL5agg3';
+let appId = 'A7zzPAY1DY85f9UfYCWqfuY6-gzGzoHsz';
+let appKey = 'fq6eTM7cLL2JM7k1tXL5agg3';
+if (process.env.NODE_ENV === 'development') {
+  appId = 'Yjq98hRPOhKshBO2znnIFdrb-gzGzoHsz';
+  appKey = 'M1Xm5rR4I8mLsVtPtv9sVY23';
 }
 AV.init({
   appId,

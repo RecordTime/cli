@@ -3,7 +3,7 @@
  * @author ltaoo
  */
 module.exports = {
-  APP_DIR_NAME: process.env.NODE_ENV === 'productaion' ? '.recordtime' : '.record-dev',
+  APP_DIR_NAME: process.env.NODE_ENV === 'development' ? '.record-dev' : '.recordtime',
   STORAGE_DIR_NAME: 'storage',
   ARCHIVE_DIR_NAME: 'archive',
   TEMP_DIR_NAME: '.temp',
