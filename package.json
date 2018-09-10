@@ -1,10 +1,11 @@
 {
   "name": "record-time-cli",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "log": "node cli.js --log @19:25-19:50 @1 获取messages"
+  "description": "pomodoro + todo list",
+  "main": "cli.js",
+  "scripts": {},
+  "bin": {
+    "rt": "./cli.js"
   },
   "keywords": [],
   "author": "",
