@@ -1,8 +1,8 @@
 {
   "name": "record-time-cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "pomodoro + todo list",
-  "main": "cli.js",
+  "main": "index.js",
   "scripts": {},
   "bin": {
     "rt": "./cli.js"
